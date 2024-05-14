@@ -36,10 +36,19 @@ namespace rockpaperscissor
 
         private void FetchToggleValues()
         {
-            bool musicOn = PlayerPrefs.GetInt(GameData.Constants.MUSIC_TOGGLE_KEY) == 1 ? true : false;
-            bool soundOn = PlayerPrefs.GetInt(GameData.Constants.SOUND_TOGGLE_KEY) == 1 ? true : false;
+            bool musicOn = !PlayerPrefs.HasKey(GameData.Constants.MUSIC_TOGGLE_KEY);
+            bool soundOn = !PlayerPrefs.HasKey(GameData.Constants.SOUND_TOGGLE_KEY);
+
+            if (PlayerPrefs.HasKey(GameData.Constants.MUSIC_TOGGLE_KEY) && PlayerPrefs.HasKey(GameData.Constants.SOUND_TOGGLE_KEY))
+            {
+                musicOn = PlayerPrefs.GetInt(GameData.Constants.MUSIC_TOGGLE_KEY) == 1 ? true : false;
+                soundOn = PlayerPrefs.GetInt(GameData.Constants.SOUND_TOGGLE_KEY) == 1 ? true : false;
+            }
+
             soundToggle.isOn = soundOn;
             musicToggle.isOn = musicOn;
+            HandleSoundToggle(soundOn);
+            HandleMusicToggle(musicOn);
         }
 
         private void HandleMusicToggle(bool _musicOn)

@@ -43,14 +43,17 @@ namespace rockpaperscissor
                 timerBar.value = timeRemaining;
             }
 
-            if (timeRemaining <= 3)
+            if (timeRemaining >= 2.99f && timeRemaining <=3f && runTimer)
+            {
                 timerBarImg.color = Color.red;
+                AudioController.Instance.PlayWarningSound();
+            }
 
-            if (timeRemaining <= 1 && runTimer)
+            if (timeRemaining >= .99f && timeRemaining <= 1f && runTimer)
                 gameController.OnTimeUp();
-            
 
         }
+
 
      
     }

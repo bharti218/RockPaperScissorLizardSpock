@@ -54,6 +54,12 @@ namespace rockpaperscissor
             sfxAudioSrc.PlayOneShot(sfxMusic[4]);
         }
 
+        public void PlayWarningSound()
+        {
+            if (!soundOn || sfxAudioSrc.isPlaying) return;
+            sfxAudioSrc.PlayOneShot(sfxMusic[5]);
+        }
+
         public void PlayBgMusic(bool isOn)
         {
             if (isOn)

@@ -11,9 +11,9 @@ namespace rockpaperscissor
             return otherMove is Rock || otherMove is Spock;
         }
 
-        public string GetMoveName()
+        public GameData.MOVE GetMoveName()
         {
-            return "Paper";
+            return GameData.MOVE.PAPER;
         }
 
 

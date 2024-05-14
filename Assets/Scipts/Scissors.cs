@@ -12,9 +12,9 @@ namespace rockpaperscissor
             return otherMove is Paper || otherMove is Lizard;
         }
 
-        public string GetMoveName()
+        public GameData.MOVE GetMoveName()
         {
-            return "Scissors";
+            return GameData.MOVE.SCISSORS;
         }
     }
 }

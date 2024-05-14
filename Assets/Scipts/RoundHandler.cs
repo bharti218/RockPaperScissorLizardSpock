@@ -25,11 +25,13 @@ namespace rockpaperscissor
         {
             if (playerMove.Kills(aiMove))
             {
-                return "Player wins! " + playerMove.GetMoveName() + " defeats " + aiMove.GetMoveName();
+                Debug.Log("Player wins! " + playerMove.GetMoveName().ToString() + " defeats " + aiMove.GetMoveName().ToString());
+                return "player";
             }
             else if (aiMove.Kills(playerMove))
             {
-                return "AI wins! " + aiMove.GetMoveName() + " defeats " + playerMove.GetMoveName();
+                Debug.Log("AI wins! " + aiMove.GetMoveName().ToString() + " defeats " + playerMove.GetMoveName().ToString());
+                return "computer";
             }
             else
             {

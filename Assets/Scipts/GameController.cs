@@ -15,6 +15,7 @@ namespace rockpaperscissor
         [SerializeField] MoveDisplay computerMoveDisplay;
         [SerializeField] HudController hudController;
         [SerializeField] Timer timer;
+        [SerializeField] float reward;
         [SerializeField] float maxTime;
         private RoundHandler roundHandler;
 
@@ -26,6 +27,8 @@ namespace rockpaperscissor
             roundHandler = new RoundHandler();
             playBtn.onClick.AddListener(ShowGamePlay);
         }
+
+        
 
         public void PlayerMakesMove(int move)
         {
@@ -54,23 +57,36 @@ namespace rockpaperscissor
                 computerMoveDisplay.ShowBlastEffect();
             else if (string.Compare(result, "computer") == 0)
                 playerMoveDisplay.ShowBlastEffect();
+
             yield return new WaitForSeconds(GameData.Constants.ROUND_START_DUR);
 
             if (string.Compare(result, "computer") == 0)
             {
+                hudController.SetComputerScore(reward);
+                hudController.ShowGameOverPanel();
+                yield return new WaitForSeconds(GameData.Constants.RESULT_PANEL_SHOW_DUR);
                 ShowMainMenu();
             }
             else
             {
+                if (string.Compare(result, "player") == 0)
+                {
+                    hudController.SetPlayerScore(reward);
+                    hudController.ShowYouWinPanel();
+                    yield return new WaitForSeconds(GameData.Constants.RESULT_PANEL_SHOW_DUR);
+                }
                 StartRound();
             }
+            hudController.HideResultPanels();
+
 
             Debug.Log(roundHandler.DetermineWinner());
         }
 
         internal void OnTimeUp()
         {
-            
+            hudController.ShowGameOverPanel();
+            Invoke(nameof(ShowMainMenu), GameData.Constants.RESULT_PANEL_SHOW_DUR);
         }
 
         private IMove GetMoveFromString(GameData.MOVE move)
@@ -116,12 +132,16 @@ namespace rockpaperscissor
 
         private void ShowGamePlay()
         {
+           
+            hudController.HideResultPanels();
             mainMenu.SetActive(false);
             StartRound();
         }
 
         private void ShowMainMenu()
         {
+            playerMoveDisplay.shuffling = false;
+            computerMoveDisplay.shuffling = false;
             mainMenu.SetActive(true);
         }
 
@@ -132,5 +152,7 @@ namespace rockpaperscissor
             computerMoveDisplay.ShuffleIcons();
             timer.StartTimer(maxTime);
         }
+
+        
     }
 }

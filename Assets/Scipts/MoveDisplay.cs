@@ -9,7 +9,7 @@ namespace rockpaperscissor
         [SerializeField] List<Icon> icons;
         [SerializeField] GameObject blastVfx;
         private Dictionary<GameData.MOVE, Icon> iconMap = new();
-        bool shuffling;
+        public bool shuffling;
         int counter = 0;
 
         private void Awake()

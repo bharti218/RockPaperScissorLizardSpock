@@ -42,6 +42,7 @@ namespace rockpaperscissor
 
         public void ShowBlastEffect()
         {
+            AudioController.Instance.PlayBlastSound();
             HideIcons();
             ShowBlast();
             Invoke(nameof(HideBlast), GameData.Constants.HIDE_BLAST_DUR);
@@ -75,13 +76,10 @@ namespace rockpaperscissor
             blastVfx.SetActive(true);
         }
 
-
         private void HideBlast()
         {
             blastVfx.SetActive(false);
         }
-
-
 
     }
 }

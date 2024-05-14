@@ -1,11 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace rockpaperscissor
 {
-
-
     public class GameData 
     {
         public enum MOVE
@@ -28,10 +23,8 @@ namespace rockpaperscissor
             public const string COMPUTER_SCORE_HEADING = "Computer's Score: ";
             public const string HIGH_SCORE_HEADING = "High Score: ";
             public const string PLAYER_SCORE_HEADING = "Your Score: ";
-
-
-
-
+            public const string MUSIC_TOGGLE_KEY = "music";
+            public const string SOUND_TOGGLE_KEY = "sound";
         }
     }
 }

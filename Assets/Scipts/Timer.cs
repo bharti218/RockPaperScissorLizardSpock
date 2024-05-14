@@ -1,8 +1,6 @@
-using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using DG.Tweening;
 
 namespace rockpaperscissor
 {

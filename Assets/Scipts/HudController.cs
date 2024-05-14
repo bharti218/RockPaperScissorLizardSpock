@@ -1,9 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
+using System;
 
 namespace rockpaperscissor
 {
@@ -16,10 +16,12 @@ namespace rockpaperscissor
         [SerializeField] TextMeshProUGUI computerScore;
         [SerializeField] TextMeshProUGUI playerScore;
         [SerializeField] TextMeshProUGUI highScore;
+        [SerializeField] Toggle soundToggle;
+        [SerializeField] Toggle musicToggle;
+
         private float computerScr;
         private float playerScr;
         private float highScr;
-
         private void Start()
         {
             if (PlayerPrefs.HasKey(GameData.Constants.HIGH_SCORE))
@@ -27,6 +29,31 @@ namespace rockpaperscissor
                 highScr = PlayerPrefs.GetFloat(GameData.Constants.HIGH_SCORE);
                 highScore.text = GameData.Constants.HIGH_SCORE_HEADING + highScr.ToString();
             }
+            soundToggle.onValueChanged.AddListener(HandleSoundToggle);
+            musicToggle.onValueChanged.AddListener(HandleMusicToggle);
+            FetchToggleValues();
+        }
+
+        private void FetchToggleValues()
+        {
+            bool musicOn = PlayerPrefs.GetInt(GameData.Constants.MUSIC_TOGGLE_KEY) == 1 ? true : false;
+            bool soundOn = PlayerPrefs.GetInt(GameData.Constants.SOUND_TOGGLE_KEY) == 1 ? true : false;
+            soundToggle.isOn = soundOn;
+            musicToggle.isOn = musicOn;
+        }
+
+        private void HandleMusicToggle(bool _musicOn)
+        {
+            AudioController.Instance.PlayBgMusic(_musicOn);
+            int musicValue = _musicOn ? 1 : 0;
+            PlayerPrefs.SetInt(GameData.Constants.MUSIC_TOGGLE_KEY, musicValue);
+        }
+
+        private void HandleSoundToggle(bool _soundOn)
+        {
+            AudioController.soundOn = _soundOn;
+            int soundValue = _soundOn ? 1 : 0;
+            PlayerPrefs.SetInt(GameData.Constants.SOUND_TOGGLE_KEY, soundValue);
         }
 
         public void SetButtonInteraction(bool isBtnActive)
@@ -43,12 +70,20 @@ namespace rockpaperscissor
             {
                 moveBtns[i].gameObject.transform.localScale = Vector3.one;
             }
-
             moveBtns[id].gameObject.transform.DOScale(1.2f, .3f);
+        }
+
+        public void ResetBtnScale()
+        {
+            for (int i = 0; i < moveBtns.Count; i++)
+            {
+                moveBtns[i].gameObject.transform.localScale = Vector3.one;
+            }
         }
 
         public void ShowGameOverPanel()
         {
+            AudioController.Instance.PlayLoseSound();
             youWin.SetActive(false);
             blackFade.SetActive(true);
             gameOver.SetActive(true);
@@ -56,6 +91,7 @@ namespace rockpaperscissor
 
         public void ShowYouWinPanel()
         {
+            AudioController.Instance.PlayWinSound();
             gameOver.SetActive(false);
             blackFade.SetActive(true);
             youWin.SetActive(true);
@@ -67,7 +103,6 @@ namespace rockpaperscissor
             blackFade.SetActive(false);
             gameOver.SetActive(false);
         }
-
 
         public void SetPlayerScore(float reward)
         {

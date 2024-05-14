@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,8 +18,6 @@ namespace rockpaperscissor
         [SerializeField] float maxTime;
         private RoundHandler roundHandler;
 
-
-
         void Start()
         {
             ShowMainMenu();
@@ -28,16 +25,14 @@ namespace rockpaperscissor
             playBtn.onClick.AddListener(ShowGamePlay);
         }
 
-        
-
         public void PlayerMakesMove(int move)
         {
             StartCoroutine(PlayeMoveHandler(move));
         }
 
-
         IEnumerator PlayeMoveHandler(int move)
         {
+            AudioController.Instance.PlayUISound();
             hudController.SetButtonInteraction(false);
             timer.StopTimer();
             IMove playerMove = GetMoveFromString((GameData.MOVE)move);
@@ -78,8 +73,6 @@ namespace rockpaperscissor
                 StartRound();
             }
             hudController.HideResultPanels();
-
-
             Debug.Log(roundHandler.DetermineWinner());
         }
 
@@ -132,7 +125,7 @@ namespace rockpaperscissor
 
         private void ShowGamePlay()
         {
-           
+            AudioController.Instance.PlayClickSound(); 
             hudController.HideResultPanels();
             mainMenu.SetActive(false);
             StartRound();
@@ -148,6 +141,7 @@ namespace rockpaperscissor
         private void StartRound()
         {
             hudController.SetButtonInteraction(true);
+            hudController.ResetBtnScale();
             playerMoveDisplay.ShuffleIcons();
             computerMoveDisplay.ShuffleIcons();
             timer.StartTimer(maxTime);
